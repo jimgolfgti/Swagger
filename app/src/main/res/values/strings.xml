@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Swagger</string>
+    <string name="action_settings">Settings</string>
+    <string name="tweet_winner">The winner is.....</string>
+    <string name="pick_winner">Pick Winner</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="load_tweets">Get Tweets</string>
+
+</resources>

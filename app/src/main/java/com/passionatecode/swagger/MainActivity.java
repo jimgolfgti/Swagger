@@ -31,7 +31,7 @@ public class MainActivity extends Activity implements TwitterLoginFragment.OnTwi
                 finish();
                 return;
             }
-            if (preferences.getBoolean(Constants.TWITTER_LOGGED_IN, false)) {
+            if (preferences.getBoolean(getString(R.string.pref_twitter_logged_in), false)) {
                 swagWinnersFragment = new SwagWinnersFragment();
                 getFragmentManager().beginTransaction()
                         .add(R.id.container, swagWinnersFragment)
@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements TwitterLoginFragment.OnTwi
     }
 
     private void ensureAssetsPresent() throws IOException {
-        if (preferences.getBoolean(Constants.ASSETS_IMPORTED, false)) return;
+        if (preferences.getBoolean(getString(R.string.setting_assets_imported), false)) return;
 
         StringBuilder builder = new StringBuilder();
         InputStream stream = this.getAssets().open("twitter_api.txt");
@@ -61,9 +61,9 @@ public class MainActivity extends Activity implements TwitterLoginFragment.OnTwi
         String[] consumerKey = builder.toString().split(":", 2);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.TWITTER_CONSUMER_KEY, consumerKey[0]);
-        editor.putString(Constants.TWITTER_CONSUMER_SECRET, consumerKey[1]);
-        editor.putBoolean(Constants.ASSETS_IMPORTED, true);
+        editor.putString(getString(R.string.setting_twitter_consumer_key), consumerKey[0]);
+        editor.putString(getString(R.string.setting_twitter_consumer_secret), consumerKey[1]);
+        editor.putBoolean(getString(R.string.setting_assets_imported), true);
         editor.apply();
     }
 

@@ -91,9 +91,9 @@ public class TwitterLoginFragment extends Fragment {
     private void loginToTwitter() {
         Configuration configuration = new ConfigurationBuilder()
                 .setOAuthConsumerKey(preferences
-                        .getString(Constants.TWITTER_CONSUMER_KEY, null))
+                        .getString(getString(R.string.setting_twitter_consumer_key), null))
                 .setOAuthConsumerSecret(preferences
-                        .getString(Constants.TWITTER_CONSUMER_SECRET, null))
+                        .getString(getString(R.string.setting_twitter_consumer_secret), null))
                 .build();
 
         TwitterFactory factory = new TwitterFactory(configuration);
@@ -117,9 +117,9 @@ public class TwitterLoginFragment extends Fragment {
 
             Editor editor = preferences.edit();
 
-            editor.putString(Constants.TWITTER_USER_KEY, accessToken.getToken());
-            editor.putString(Constants.TWITTER_USER_SECRET, accessToken.getTokenSecret());
-            editor.putBoolean(Constants.TWITTER_LOGGED_IN, true);
+            editor.putString(getString(R.string.setting_twitter_user_key), accessToken.getToken());
+            editor.putString(getString(R.string.setting_twitter_user_secret), accessToken.getTokenSecret());
+            editor.putBoolean(getString(R.string.pref_twitter_logged_in), true);
             editor.apply();
         } catch (Exception e) {
             Log.e(Constants.APPTAG, Log.getStackTraceString(e));

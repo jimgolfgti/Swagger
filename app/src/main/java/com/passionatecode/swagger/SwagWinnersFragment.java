@@ -67,13 +67,13 @@ public class SwagWinnersFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_swag_winners, container, false);
         ButterKnife.inject(this, rootView);
 
-        SharedPreferences preferences = PreferenceManager
+        final SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(this.getActivity());
         loadTweetsButton.setEnabled(true);
         loadTweetsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 v.setEnabled(false);
-                loadTweets();
+                loadTweets(preferences.getString(getString(R.string.pref_twitter_search_term), null));
             }
         });
         pickWinnerButton.setEnabled(false);
@@ -87,13 +87,13 @@ public class SwagWinnersFragment extends Fragment {
 
         Configuration configuration = new ConfigurationBuilder()
                 .setOAuthConsumerKey(preferences
-                        .getString(Constants.TWITTER_CONSUMER_KEY, null))
+                        .getString(getString(R.string.setting_twitter_consumer_key), null))
                 .setOAuthConsumerSecret(preferences
-                        .getString(Constants.TWITTER_CONSUMER_SECRET, null))
+                        .getString(getString(R.string.setting_twitter_consumer_secret), null))
                 .setOAuthAccessToken(preferences
-                        .getString(Constants.TWITTER_USER_KEY, null))
+                        .getString(getString(R.string.setting_twitter_user_key), null))
                 .setOAuthAccessTokenSecret(preferences
-                        .getString(Constants.TWITTER_USER_SECRET, null))
+                        .getString(getString(R.string.setting_twitter_user_secret), null))
                 .build();
         twitterFactory = new TwitterFactory(configuration);
 
@@ -106,8 +106,8 @@ public class SwagWinnersFragment extends Fragment {
         ButterKnife.reset(this);
     }
 
-    private void loadTweets() {
-        new DownloadTweetsTask(twitterFactory.getInstance()).execute();
+    private void loadTweets(String searchTerm) {
+        new DownloadTweetsTask(twitterFactory.getInstance(), searchTerm).execute();
     }
 
     private void tweetsLoaded(List<Status> tweets) {
@@ -128,14 +128,16 @@ public class SwagWinnersFragment extends Fragment {
 
     private class DownloadTweetsTask extends AsyncTask<Void, Void, List<Status>> {
         private final Twitter twitter;
+        private final String searchTerm;
 
-        public DownloadTweetsTask(Twitter twitter) {
+        public DownloadTweetsTask(Twitter twitter, String searchTerm) {
             this.twitter = twitter;
+            this.searchTerm = searchTerm;
         }
 
         @Override
         protected List<twitter4j.Status> doInBackground(Void... params) {
-            Query query = new Query("#TechNott")
+            Query query = new Query(searchTerm)
                     .count(100)
                     .lang("en")
                     .resultType(Query.ResultType.recent);
